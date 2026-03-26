@@ -1,0 +1,6 @@
+[build]
+  publish = "."
+
+# Auto deploy when code is pushed to main branch
+[context.production]
+  environment = { NODE_ENV = "production" }
