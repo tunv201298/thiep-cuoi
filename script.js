@@ -75,7 +75,9 @@
     const panels = Array.from(document.querySelectorAll('[data-panel]'));
     if (!buttons.length || !panels.length) return;
 
-    function activate(panelId) {
+    function activate(panelId, options = {}) {
+      const { scroll = true } = options;
+
       buttons.forEach((button) => {
         const active = button.dataset.target === panelId;
         button.classList.toggle('active', active);
@@ -90,11 +92,117 @@
 
       const activePanel = document.getElementById(panelId);
       setupReveal(activePanel);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (scroll) {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
     }
 
     buttons.forEach((button) => {
       button.addEventListener('click', () => activate(button.dataset.target));
+    });
+
+    const tabParam = new URLSearchParams(window.location.search).get('ban_thiep');
+    const panelMap = {
+      vuquy: 'vu-quy-panel',
+      thanhhon: 'thanh-hon-panel',
+    };
+    const defaultPanel = panelMap[(tabParam || '').toLowerCase()];
+    if (defaultPanel) {
+      activate(defaultPanel, { scroll: false });
+    }
+  }
+
+  function setupGuestName() {
+    const params = new URLSearchParams(window.location.search);
+    const guestName = (
+      params.get('guest')
+      || params.get('name')
+      || params.get('khach')
+      || params.get('invitee')
+      || ''
+    ).trim();
+
+    document.querySelectorAll('[data-guest-name]').forEach((el) => {
+      el.textContent = guestName;
+      el.classList.toggle('is-empty', !guestName);
+    });
+  }
+
+  function setupSliders() {
+    document.querySelectorAll('[data-slider]').forEach((slider) => {
+      const track = slider.querySelector('.memory-track');
+      const slides = Array.from(slider.querySelectorAll('.memory-slide'));
+      const section = slider.closest('.memory-gallery');
+      const thumbs = section ? Array.from(section.querySelectorAll('.memory-thumb')) : [];
+      const prevBtn = slider.querySelector('[data-prev]');
+      const nextBtn = slider.querySelector('[data-next]');
+      let index = 0;
+
+      if (!track || !slides.length) return;
+
+      function render(nextIndex) {
+        index = (nextIndex + slides.length) % slides.length;
+        track.style.transform = `translateX(-${index * 100}%)`;
+
+        slides.forEach((slide, slideIndex) => {
+          slide.classList.toggle('active', slideIndex === index);
+        });
+
+        thumbs.forEach((thumb, thumbIndex) => {
+          const active = thumbIndex === index;
+          thumb.classList.toggle('active', active);
+          thumb.setAttribute('aria-selected', String(active));
+        });
+      }
+
+      prevBtn?.addEventListener('click', () => render(index - 1));
+      nextBtn?.addEventListener('click', () => render(index + 1));
+
+      thumbs.forEach((thumb, thumbIndex) => {
+        thumb.addEventListener('click', () => render(thumbIndex));
+      });
+
+      let touchStartX = 0;
+
+      track.addEventListener('touchstart', (event) => {
+        touchStartX = event.changedTouches[0]?.clientX || 0;
+      }, { passive: true });
+
+      track.addEventListener('touchend', (event) => {
+        const touchEndX = event.changedTouches[0]?.clientX || 0;
+        const delta = touchEndX - touchStartX;
+
+        if (Math.abs(delta) < 40) return;
+        render(index + (delta < 0 ? 1 : -1));
+      }, { passive: true });
+
+      render(0);
+    });
+  }
+
+  function setupParentDividers() {
+    document.querySelectorAll('.parent-col p').forEach((el) => {
+      if (el.querySelector('.parent-divider') || el.querySelector('.parent-names')) return;
+
+      const normalizedHtml = el.innerHTML.replace(/<br\s*\/?>/gi, '<br>');
+      const parts = normalizedHtml
+        .split('<br>')
+        .map((part) => part.replace(/&nbsp;/gi, ' ').trim());
+
+      const dividerIndex = parts.findIndex((part) => {
+        return /^(?:\d|thon|thôn|xa|xã|phuong|phường|quan|quận|tp|thanh pho|thành phố|duong|đường)/i.test(part);
+      });
+
+      if (dividerIndex <= 0) return;
+
+      const nameLines = parts.slice(0, dividerIndex).filter(Boolean).join('<br>');
+      const addressLines = parts.slice(dividerIndex).filter(Boolean).join('<br>');
+
+      el.innerHTML = [
+        `<span class="parent-names">${nameLines}</span>`,
+        '<span class="parent-divider" aria-hidden="true"></span>',
+        `<span class="parent-address">${addressLines}</span>`,
+      ].join('');
     });
   }
 
@@ -172,5 +280,8 @@
   addFloatingHearts();
   addPetals();
   setupTabs();
+  setupGuestName();
+  setupSliders();
+  setupParentDividers();
   setupMusic();
 })();
