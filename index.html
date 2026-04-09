@@ -32,6 +32,52 @@
     href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Great+Vibes&family=Playfair+Display:wght@400;600;700&family=Montserrat:wght@300;400;500;600&display=swap"
     rel="stylesheet" />
   <link rel="stylesheet" href="style.min.css" />
+  <style>
+    /* ── Countdown ── */
+    .countdown-wrap{text-align:center;padding:2rem 1rem 1.5rem;font-family:'Montserrat',sans-serif;}
+    .countdown-label{font-size:.75rem;letter-spacing:.15em;text-transform:uppercase;color:#a07850;margin-bottom:1rem;}
+    .countdown-boxes{display:flex;align-items:center;justify-content:center;gap:.5rem;flex-wrap:wrap;}
+    .cd-box{background:#fff8f0;border:1px solid #e8d5b7;border-radius:.75rem;padding:.6rem .9rem;min-width:4rem;text-align:center;box-shadow:0 2px 8px rgba(160,120,80,.1);}
+    .cd-box span{display:block;font-size:2rem;font-weight:600;color:#7a4f2e;line-height:1;}
+    .cd-box small{display:block;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:#a07850;margin-top:.25rem;}
+    .cd-sep{font-size:1.8rem;font-weight:300;color:#c9a87c;align-self:flex-start;padding-top:.5rem;}
+    .countdown-event{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:#b08060;margin-top:1rem;}
+
+    /* ── Gift box button ── */
+    .gift-box-btn{display:flex;align-items:center;gap:.75rem;margin:1.5rem auto 2rem;padding:.9rem 2rem;background:linear-gradient(135deg,#c9a87c,#a07850);color:#fff;border:none;border-radius:3rem;font-family:'Montserrat',sans-serif;font-size:1rem;font-weight:600;letter-spacing:.08em;cursor:pointer;box-shadow:0 4px 16px rgba(160,120,80,.35);transition:transform .2s,box-shadow .2s;}
+    .gift-box-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(160,120,80,.45);}
+    .gift-box-icon{font-size:1.4rem;}
+
+    /* ── QR Modal ── */
+    .qr-modal{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;}
+    .qr-modal[hidden]{display:none;}
+    .qr-modal-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(3px);}
+    .qr-modal-box{position:relative;background:#fffaf5;border-radius:1.25rem;padding:2rem 1.5rem;max-width:520px;width:92%;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.25);animation:modalIn .3s ease;}
+    @keyframes modalIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    .qr-modal-close{position:absolute;top:.75rem;right:.75rem;background:none;border:none;font-size:1.1rem;cursor:pointer;color:#a07850;padding:.4rem .6rem;border-radius:.5rem;transition:background .2s;}
+    .qr-modal-close:hover{background:#f0e0cc;}
+    .qr-modal-title{text-align:center;font-family:'Great Vibes',cursive;font-size:2rem;color:#7a4f2e;margin:0 0 .25rem;}
+    .qr-modal-sub{text-align:center;font-size:.8rem;color:#a07850;margin-bottom:1.5rem;line-height:1.5;}
+    .qr-modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;align-items:start;}
+    .qr-modal-grid .bank-card{display:flex;flex-direction:column;align-items:center;}
+    .qr-modal-grid .bank-qr{width:100%;aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+    .qr-modal-grid .bank-qr img{width:100%;height:100%;object-fit:contain;}
+    @media(max-width:400px){.qr-modal-grid{grid-template-columns:1fr;}}
+
+    /* ── Lightbox ── */
+    #lightbox{position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s;}
+    #lightbox.active{opacity:1;pointer-events:all;}
+    #lb-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.88);}
+    #lb-img-wrap{position:relative;z-index:1;max-width:92vw;max-height:88vh;display:flex;align-items:center;justify-content:center;}
+    #lb-img{max-width:92vw;max-height:88vh;object-fit:contain;border-radius:.5rem;box-shadow:0 8px 40px rgba(0,0,0,.6);transition:opacity .15s;}
+    #lb-close{position:fixed;top:1rem;right:1rem;z-index:2;background:rgba(255,255,255,.15);border:none;color:#fff;font-size:1.3rem;width:2.4rem;height:2.4rem;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s;}
+    #lb-close:hover{background:rgba(255,255,255,.3);}
+    #lb-prev,#lb-next{position:fixed;top:50%;transform:translateY(-50%);z-index:2;background:rgba(255,255,255,.15);border:none;color:#fff;font-size:2.5rem;width:3rem;height:3rem;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s;line-height:1;}
+    #lb-prev{left:.75rem;}#lb-next{right:.75rem;}
+    #lb-prev:hover,#lb-next:hover{background:rgba(255,255,255,.3);}
+    /* Make clickable images show pointer */
+    .memory-slide img,.gallery2 img,.spotlight-photo img,.photo-band img,.g2-item img{cursor:zoom-in;}
+  </style>
 </head>
 
 <body>
@@ -67,7 +113,7 @@
     <main class="invitation-shell">
       <article id="vu-quy-panel" class="invitation-panel active" data-panel>
         <section class="hero">
-          <img class="hero-img" src="./img/WIN_2442.webp" alt="Ảnh cưới Hiền Vy và Văn Tú" />
+          <img class="hero-img" data-random-hero="vuquy" src="./img/WIN_2442.webp" alt="Ảnh cưới Hiền Vy và Văn Tú" />
           <div class="hero-overlay">
             <div class="hero-script">Lễ Vu Quy</div>
             <div class="hero-names">
@@ -82,10 +128,10 @@
 
         <section class="gallery2 reveal">
           <div class="g2-item reveal-l">
-            <img src="./img/WIN_2486.webp" alt="Khoảnh khắc lễ Vu Quy 1" />
+            <img data-random-gallery="vuquy-1" src="./img/WIN_2486.webp" alt="Khoảnh khắc lễ Vu Quy 1" />
           </div>
           <div class="g2-item reveal-r">
-            <img src="./img/WIN_2536.webp" alt="Khoảnh khắc lễ Vu Quy 2" />
+            <img data-random-gallery="vuquy-2" src="./img/WIN_2536.webp" alt="Khoảnh khắc lễ Vu Quy 2" />
           </div>
         </section>
 
@@ -212,51 +258,53 @@
             <p class="section-kicker">Album ảnh</p>
             <h2>Những khoảnh khắc đẹp</h2>
           </div>
-          <div class="memory-slider" data-slider>
+          <div class="memory-slider" data-slider data-album="vuquy">
             <button class="memory-nav prev" type="button" data-prev aria-label="Ảnh trước">&#8249;</button>
             <div class="memory-viewport">
               <div class="memory-track">
                 <figure class="memory-slide active">
-                  <img src="./img/WIN_2486.webp" alt="Khoảnh khắc cô dâu chú rể bên khung cửa" loading="lazy" />
+                  <img src="./img/WIN_1738.webp" alt="Khoảnh khắc cô dâu chú rể 1" loading="lazy" />
                 </figure>
                 <figure class="memory-slide">
-                  <img src="./img/WIN_2536.webp" alt="Khoảnh khắc cô dâu chú rể trong lễ Vu Quy" loading="lazy" />
+                  <img src="./img/WIN_1744.webp" alt="Khoảnh khắc cô dâu chú rể 2" loading="lazy" />
                 </figure>
                 <figure class="memory-slide">
-                  <img src="./img/WIN_2562.webp" alt="Ảnh đôi của cô dâu chú rể" loading="lazy" />
+                  <img src="./img/WIN_1755.webp" alt="Khoảnh khắc cô dâu chú rể 3" loading="lazy" />
                 </figure>
                 <figure class="memory-slide">
-                  <img src="./img/WIN_2588.webp" alt="Khoảnh khắc nhẹ nhàng của cô dâu chú rể" loading="lazy" />
+                  <img src="./img/WIN_1764.webp" alt="Khoảnh khắc cô dâu chú rể 4" loading="lazy" />
                 </figure>
                 <figure class="memory-slide">
-                  <img src="./img/WIN_2611.webp" alt="Chân dung cô dâu Hiền Vy" loading="lazy" />
+                  <img src="./img/WIN_1866.webp" alt="Khoảnh khắc cô dâu chú rể 5" loading="lazy" />
+                </figure>
+                <figure class="memory-slide">
+                  <img src="./img/WIN_1891.webp" alt="Khoảnh khắc cô dâu chú rể 6" loading="lazy" />
+                </figure>
+                <figure class="memory-slide">
+                  <img src="./img/WIN_1910.webp" alt="Khoảnh khắc cô dâu chú rể 7" loading="lazy" />
+                </figure>
+                <figure class="memory-slide">
+                  <img src="./img/WIN_1927.webp" alt="Khoảnh khắc cô dâu chú rể 8" loading="lazy" />
                 </figure>
               </div>
             </div>
             <button class="memory-nav next" type="button" data-next aria-label="Ảnh tiếp theo">&#8250;</button>
           </div>
           <div class="memory-thumbs" role="tablist" aria-label="Chọn ảnh trong album">
-            <button class="memory-thumb active" type="button" data-slide="0" aria-label="Mở ảnh 1">
-              <img src="./img/WIN_2486.webp" alt="" loading="lazy" />
-            </button>
-            <button class="memory-thumb" type="button" data-slide="1" aria-label="Mở ảnh 2">
-              <img src="./img/WIN_2536.webp" alt="" loading="lazy" />
-            </button>
-            <button class="memory-thumb" type="button" data-slide="2" aria-label="Mở ảnh 3">
-              <img src="./img/WIN_2562.webp" alt="" loading="lazy" />
-            </button>
-            <button class="memory-thumb" type="button" data-slide="3" aria-label="Mở ảnh 4">
-              <img src="./img/WIN_2588.webp" alt="" loading="lazy" />
-            </button>
-            <button class="memory-thumb" type="button" data-slide="4" aria-label="Mở ảnh 5">
-              <img src="./img/WIN_2611.webp" alt="" loading="lazy" />
-            </button>
+            <button class="memory-thumb active" type="button" data-slide="0" aria-label="Mở ảnh 1"><img src="./img/WIN_1738.webp" alt="" loading="lazy" /></button>
+            <button class="memory-thumb" type="button" data-slide="1" aria-label="Mở ảnh 2"><img src="./img/WIN_1744.webp" alt="" loading="lazy" /></button>
+            <button class="memory-thumb" type="button" data-slide="2" aria-label="Mở ảnh 3"><img src="./img/WIN_1755.webp" alt="" loading="lazy" /></button>
+            <button class="memory-thumb" type="button" data-slide="3" aria-label="Mở ảnh 4"><img src="./img/WIN_1764.webp" alt="" loading="lazy" /></button>
+            <button class="memory-thumb" type="button" data-slide="4" aria-label="Mở ảnh 5"><img src="./img/WIN_1866.webp" alt="" loading="lazy" /></button>
+            <button class="memory-thumb" type="button" data-slide="5" aria-label="Mở ảnh 6"><img src="./img/WIN_1891.webp" alt="" loading="lazy" /></button>
+            <button class="memory-thumb" type="button" data-slide="6" aria-label="Mở ảnh 7"><img src="./img/WIN_1910.webp" alt="" loading="lazy" /></button>
+            <button class="memory-thumb" type="button" data-slide="7" aria-label="Mở ảnh 8"><img src="./img/WIN_1927.webp" alt="" loading="lazy" /></button>
           </div>
         </section>
 
         <section class="spotlight reveal">
           <div class="spotlight-photo reveal-l">
-            <img src="./img/WIN_2611.webp" alt="Chân dung cô dâu Hiền Vy" />
+            <img data-random-portrait="bride" src="./img/WIN_2611.webp" alt="Chân dung cô dâu Hiền Vy" />
           </div>
           <div class="spotlight-copy reveal-r">
             <p class="section-kicker">Cô dâu</p>
@@ -272,21 +320,21 @@
             <p>Út Nam. Đồng hành cùng cô dâu trong lễ Vu Quy và cùng gia đình đón tiếp khách mời hai bên.</p>
           </div>
           <div class="spotlight-photo reveal-r">
-            <img src="./img/WIN_2647.webp" alt="Chân dung chú rể Văn Tú" />
+            <img data-random-portrait="groom" src="./img/WIN_2647.webp" alt="Chân dung chú rể Văn Tú" />
           </div>
         </section>
 
         <section class="photo-band reveal">
-          <img class="band-main" src="./img/WIN_2562.webp" alt="Ảnh đôi cho phần trang trí lễ Vu Quy" />
+          <img class="band-main" data-random-band="vuquy-main" src="./img/WIN_2023.webp" alt="Ảnh đôi cho phần trang trí lễ Vu Quy" />
           <div class="band-grid">
-            <img src="./img/WIN_2588.webp" alt="Ảnh phụ lễ Vu Quy 1" />
-            <img src="./img/WIN_2104.webp" alt="Ảnh phụ lễ Vu Quy 2" />
+            <img data-random-band="vuquy-sub1" src="./img/WIN_2091.webp" alt="Ảnh phụ lễ Vu Quy 1" />
+            <img data-random-band="vuquy-sub2" src="./img/WIN_2100.webp" alt="Ảnh phụ lễ Vu Quy 2" />
           </div>
         </section>
 
         <section class="timeline reveal">
           <div class="tl-header">
-            <img class="tl-bg" src="./img/WIN_2003.webp" alt="" />
+            <img class="tl-bg" data-random-tl="vuquy" src="./img/WIN_2003.webp" alt="" />
             <div class="tl-title">Timeline</div>
           </div>
           <div class="tl-line">
@@ -322,7 +370,7 @@
 
       <article id="thanh-hon-panel" class="invitation-panel" data-panel hidden>
         <section class="hero">
-          <img class="hero-img" src="./img/WIN_2326.webp" alt="Ảnh cưới Hiền Vy và Văn Tú cho lễ Thành Hôn" />
+          <img class="hero-img" data-random-hero="thanhhon" src="./img/WIN_2326.webp" alt="Ảnh cưới Hiền Vy và Văn Tú cho lễ Thành Hôn" />
           <div class="hero-overlay">
             <div class="hero-script">Lễ Thành Hôn</div>
             <div class="hero-names">
@@ -337,10 +385,10 @@
 
         <section class="gallery2 reveal">
           <div class="g2-item reveal-l">
-            <img src="./img/WIN_2355.webp" alt="Khoảnh khắc lễ Thành Hôn 1" />
+            <img data-random-gallery="thanhhon-1" src="./img/WIN_2355.webp" alt="Khoảnh khắc lễ Thành Hôn 1" />
           </div>
           <div class="g2-item reveal-r">
-            <img src="./img/WIN_2362.webp" alt="Khoảnh khắc lễ Thành Hôn 2" />
+            <img data-random-gallery="thanhhon-2" src="./img/WIN_2362.webp" alt="Khoảnh khắc lễ Thành Hôn 2" />
           </div>
         </section>
 
@@ -465,51 +513,53 @@
             <p class="section-kicker">Album ảnh</p>
             <h2>Kỷ niệm ngày thành hôn</h2>
           </div>
-          <div class="memory-slider" data-slider>
+          <div class="memory-slider" data-slider data-album="thanhhon">
             <button class="memory-nav prev" type="button" data-prev aria-label="Ảnh trước">&#8249;</button>
             <div class="memory-viewport">
               <div class="memory-track">
                 <figure class="memory-slide active">
-                  <img src="./img/WIN_2326.webp" alt="Ảnh đôi trong lễ Thành Hôn" loading="lazy" />
+                  <img src="./img/WIN_1964.webp" alt="Khoảnh khắc lễ Thành Hôn 1" loading="lazy" />
                 </figure>
                 <figure class="memory-slide">
-                  <img src="./img/WIN_2355.webp" alt="Khoảnh khắc hai người bên nhau" loading="lazy" />
+                  <img src="./img/WIN_2018.webp" alt="Khoảnh khắc lễ Thành Hôn 2" loading="lazy" />
                 </figure>
                 <figure class="memory-slide">
-                  <img src="./img/WIN_2362.webp" alt="Ảnh cưới trong trang phục truyền thống" loading="lazy" />
+                  <img src="./img/WIN_2023.webp" alt="Khoảnh khắc lễ Thành Hôn 3" loading="lazy" />
                 </figure>
                 <figure class="memory-slide">
-                  <img src="./img/WIN_2314.webp" alt="Khoảnh khắc đối lập ánh sáng của cô dâu chú rể" loading="lazy" />
+                  <img src="./img/WIN_2091.webp" alt="Khoảnh khắc lễ Thành Hôn 4" loading="lazy" />
                 </figure>
                 <figure class="memory-slide">
-                  <img src="./img/WIN_2332.webp" alt="Ảnh ngoại cảnh của cô dâu chú rể" loading="lazy" />
+                  <img src="./img/WIN_2100.webp" alt="Khoảnh khắc lễ Thành Hôn 5" loading="lazy" />
+                </figure>
+                <figure class="memory-slide">
+                  <img src="./img/WIN_2104.webp" alt="Khoảnh khắc lễ Thành Hôn 6" loading="lazy" />
+                </figure>
+                <figure class="memory-slide">
+                  <img src="./img/WIN_2165.webp" alt="Khoảnh khắc lễ Thành Hôn 7" loading="lazy" />
+                </figure>
+                <figure class="memory-slide">
+                  <img src="./img/WIN_2422.webp" alt="Khoảnh khắc lễ Thành Hôn 8" loading="lazy" />
                 </figure>
               </div>
             </div>
             <button class="memory-nav next" type="button" data-next aria-label="Ảnh tiếp theo">&#8250;</button>
           </div>
           <div class="memory-thumbs" role="tablist" aria-label="Chọn ảnh trong album">
-            <button class="memory-thumb active" type="button" data-slide="0" aria-label="Mở ảnh 1">
-              <img src="./img/WIN_2326.webp" alt="" loading="lazy" />
-            </button>
-            <button class="memory-thumb" type="button" data-slide="1" aria-label="Mở ảnh 2">
-              <img src="./img/WIN_2355.webp" alt="" loading="lazy" />
-            </button>
-            <button class="memory-thumb" type="button" data-slide="2" aria-label="Mở ảnh 3">
-              <img src="./img/WIN_2362.webp" alt="" loading="lazy" />
-            </button>
-            <button class="memory-thumb" type="button" data-slide="3" aria-label="Mở ảnh 4">
-              <img src="./img/WIN_2314.webp" alt="" loading="lazy" />
-            </button>
-            <button class="memory-thumb" type="button" data-slide="4" aria-label="Mở ảnh 5">
-              <img src="./img/WIN_2332.webp" alt="" loading="lazy" />
-            </button>
+            <button class="memory-thumb active" type="button" data-slide="0" aria-label="Mở ảnh 1"><img src="./img/WIN_1964.webp" alt="" loading="lazy" /></button>
+            <button class="memory-thumb" type="button" data-slide="1" aria-label="Mở ảnh 2"><img src="./img/WIN_2018.webp" alt="" loading="lazy" /></button>
+            <button class="memory-thumb" type="button" data-slide="2" aria-label="Mở ảnh 3"><img src="./img/WIN_2023.webp" alt="" loading="lazy" /></button>
+            <button class="memory-thumb" type="button" data-slide="3" aria-label="Mở ảnh 4"><img src="./img/WIN_2091.webp" alt="" loading="lazy" /></button>
+            <button class="memory-thumb" type="button" data-slide="4" aria-label="Mở ảnh 5"><img src="./img/WIN_2100.webp" alt="" loading="lazy" /></button>
+            <button class="memory-thumb" type="button" data-slide="5" aria-label="Mở ảnh 6"><img src="./img/WIN_2104.webp" alt="" loading="lazy" /></button>
+            <button class="memory-thumb" type="button" data-slide="6" aria-label="Mở ảnh 7"><img src="./img/WIN_2165.webp" alt="" loading="lazy" /></button>
+            <button class="memory-thumb" type="button" data-slide="7" aria-label="Mở ảnh 8"><img src="./img/WIN_2422.webp" alt="" loading="lazy" /></button>
           </div>
         </section>
 
         <section class="spotlight reveal">
           <div class="spotlight-photo reveal-l">
-            <img src="./img/WIN_2647.webp" alt="Chân dung chú rể Văn Tú" />
+            <img data-random-portrait="groom2" src="./img/WIN_2647.webp" alt="Chân dung chú rể Văn Tú" />
           </div>
           <div class="spotlight-copy reveal-r">
             <p class="section-kicker">Chú rể</p>
@@ -525,21 +575,21 @@
             <p>Út nữ. Đồng hành cùng chú rể trong lễ Thành Hôn và cùng gia đình đón tiếp khách mời hai bên.</p>
           </div>
           <div class="spotlight-photo reveal-r">
-            <img src="./img/WIN_2611.webp" alt="Chân dung cô dâu Hiền Vy" />
+            <img data-random-portrait="bride2" src="./img/WIN_2611.webp" alt="Chân dung cô dâu Hiền Vy" />
           </div>
         </section>
 
         <section class="photo-band reveal">
-          <img class="band-main" src="./img/WIN_2314.webp" alt="Ảnh đôi cho phần trang trí lễ Thành Hôn" />
+          <img class="band-main" data-random-band="thanhhon-main" src="./img/WIN_2442.webp" alt="Ảnh đôi cho phần trang trí lễ Thành Hôn" />
           <div class="band-grid">
-            <img src="./img/WIN_2332.webp" alt="Ảnh phụ lễ Thành Hôn 1" />
-            <img src="./img/WIN_2246.webp" alt="Ảnh phụ lễ Thành Hôn 2" />
+            <img data-random-band="thanhhon-sub1" src="./img/WIN_2486.webp" alt="Ảnh phụ lễ Thành Hôn 1" />
+            <img data-random-band="thanhhon-sub2" src="./img/WIN_2536.webp" alt="Ảnh phụ lễ Thành Hôn 2" />
           </div>
         </section>
 
         <section class="timeline reveal">
           <div class="tl-header">
-            <img class="tl-bg" src="./img/WIN_2198.webp" alt="" />
+            <img class="tl-bg" data-random-tl="thanhhon" src="./img/WIN_2198.webp" alt="" />
             <div class="tl-title">Timeline</div>
           </div>
           <div class="tl-line">
@@ -575,36 +625,59 @@
     </main>
 
     <section class="gift reveal">
-      <div class="gift-btn">Hộp mừng cưới</div>
-      <p class="gift-name">Thông tin mừng cưới</p>
-      <p class="gift-bank">Quý khách có thể gửi lời chúc và mừng cưới tới cô dâu chú rể qua mã QR bên dưới.</p>
-
-      <div class="gift-grid">
-        <article class="bank-card">
-          <p class="bank-tag">Cô dâu</p>
-          <div class="bank-qr">
-            <img src="./img/qr-vuquy.png"
-              alt="QR ngân hàng BIDV của Lê Châu Hiền Vy" loading="lazy" />
-          </div>
-          <p class="bank-owner">Le Chau Hien Vy</p>
-          <p class="bank-number">56010001337350</p>
-          <p class="bank-name">BIDV</p>
-        </article>
-
-        <article class="bank-card">
-          <p class="bank-tag">Chú rể</p>
-          <div class="bank-qr">
-            <img src="./img/qr-thanhhon.png"
-              alt="QR ngân hàng MB Bank của Nguyễn Văn Tú" loading="lazy" />
-          </div>
-          <p class="bank-owner">Nguyen Van Tu</p>
-          <p class="bank-number">0353136067</p>
-          <p class="bank-name">MB Bank</p>
-        </article>
+      <!-- Countdown -->
+      <div class="countdown-wrap">
+        <p class="countdown-label">Đếm ngược đến ngày vui</p>
+        <div class="countdown-boxes" id="countdown">
+          <div class="cd-box"><span id="cd-days">--</span><small>Ngày</small></div>
+          <div class="cd-sep">:</div>
+          <div class="cd-box"><span id="cd-hours">--</span><small>Giờ</small></div>
+          <div class="cd-sep">:</div>
+          <div class="cd-box"><span id="cd-mins">--</span><small>Phút</small></div>
+          <div class="cd-sep">:</div>
+          <div class="cd-box"><span id="cd-secs">--</span><small>Giây</small></div>
+        </div>
+        <p class="countdown-event">Lễ Vu Quy &amp; Thành Hôn · 23–24.05.2026</p>
       </div>
+
+      <!-- Hộp mừng cưới -->
+      <button class="gift-box-btn" id="gift-box-btn" type="button" aria-haspopup="dialog">
+        <span class="gift-box-icon">🎁</span>
+        <span class="gift-box-text">Hộp mừng cưới</span>
+      </button>
 
       <div class="thankyou">Thank you!</div>
     </section>
+
+    <!-- QR Popup -->
+    <div class="qr-modal" id="qr-modal" role="dialog" aria-modal="true" aria-label="Thông tin mừng cưới" hidden>
+      <div class="qr-modal-backdrop" id="qr-backdrop"></div>
+      <div class="qr-modal-box">
+        <button class="qr-modal-close" id="qr-close" type="button" aria-label="Đóng">&#10005;</button>
+        <p class="qr-modal-title">Hộp mừng cưới</p>
+        <p class="qr-modal-sub">Quý khách có thể mừng cưới tới cô dâu chú rể qua mã QR bên dưới.</p>
+        <div class="qr-modal-grid">
+          <article class="bank-card">
+            <p class="bank-tag">Cô dâu</p>
+            <div class="bank-qr">
+              <img src="./img/qr-vuquy.png" alt="QR ngân hàng BIDV của Lê Châu Hiền Vy" loading="lazy" />
+            </div>
+            <p class="bank-owner">Le Chau Hien Vy</p>
+            <p class="bank-number">56010001337350</p>
+            <p class="bank-name">BIDV</p>
+          </article>
+          <article class="bank-card">
+            <p class="bank-tag">Chú rể</p>
+            <div class="bank-qr">
+              <img src="./img/qr-thanhhon.png" alt="QR ngân hàng MB Bank của Nguyễn Văn Tú" loading="lazy" />
+            </div>
+            <p class="bank-owner">Nguyen Van Tu</p>
+            <p class="bank-number">0353136067</p>
+            <p class="bank-name">MB Bank</p>
+          </article>
+        </div>
+      </div>
+    </div>
 
     <audio id="bg-music" autoplay muted loop playsinline webkit-playsinline preload="auto">
       <source src="./audio/cuoi-thoi.mp3" type="audio/mpeg" />
