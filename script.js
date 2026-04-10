@@ -512,7 +512,7 @@
   setupSliders();
   setupParentDividers();
   setupMusic();
-  setupRandomImages();
+  // setupRandomImages();
   setupCountdown();
   setupGiftPopup();
   setupLightbox();
